@@ -1,0 +1,20 @@
+# The main pipeline for dab_test_mp
+
+resources:
+  pipelines:
+    dab_test_mp_etl:
+      name: dab_test_mp_etl
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/dab_test_mp_etl"
+
+      libraries:
+        - glob:
+            include: ../src/dab_test_mp_etl/transformations/**
+
+      environment:
+        dependencies:
+          # We include every dependency defined by pyproject.toml by defining an editable environment
+          # that points to the folder where pyproject.toml is deployed.
+          - --editable ${workspace.file_path}
